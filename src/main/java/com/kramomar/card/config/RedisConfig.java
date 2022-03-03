@@ -22,7 +22,6 @@ public class RedisConfig {
 	    RedisStandaloneConfiguration redisStandaloneConfig = new RedisStandaloneConfiguration();
 	    redisStandaloneConfig.setHostName("localhost");
 	    redisStandaloneConfig.setPort(6379);
-	    //redisStandaloneConfig.setPassword(redisPassword);
 	    return new LettuceConnectionFactory(redisStandaloneConfig);
 	}
 

@@ -1,15 +1,14 @@
-
-server:
-  port: 9001
 spring:
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: group-id
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    application:
+        name: card-rk
+    cache:
+        type: redis
+        redis:
+            time-to-live: 60000
+            cache-null-values: true
+    data:
+        mongodb:
+            uri: mongodb+srv://navlag:Fg3UgAroDl8SDVDt@avsavivd.lfqko.mongodb.net/pmactoob?retryWrites=true&w=majority
+server:
+    port: 8092
+

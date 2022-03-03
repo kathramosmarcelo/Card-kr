@@ -1,25 +1,36 @@
 package com.kramomar.card.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.kramomar.card.entity.Card;
+import com.kramomar.card.repository.ICardRepository;
 
+import reactor.core.publisher.Mono;
+
+@RequiredArgsConstructor
 @Service
 public class CardService {
-	@Autowired
-	public  KafkaTemplate<String, Card> kafkaTemplate;
-	/*
-	
-	public String getsms( String numberAccount) {
-	    kafkaTemplate.send(NameTopic.NAMETOPIC, new Card("ACC-001",numberAccount, 12000L,new Date()));
-	    return "Connecting Successfully :)";
-	}
 
-	public Accounts publishEventAccounts(Accounts accounts){
-	    kafkaTemplate.send(NameTopic.NAMETOPIC,accounts);
-	    return accounts;
-	}
-	*/
+    private final static Logger logger = LoggerFactory.getLogger(CardService.class);
+    private final ReactiveMongoTemplate reactiveMongoTemplate;
+    private  final ICardRepository iCardRepository;
+
+    public Mono<Card> create(final Mono<Card> entityToDto) {
+        return entityToDto
+                .flatMap(iCardRepository::save);
+
+    }
+    public Mono<Card> findByNumberCard(String numberCard) {
+        logger.info("inside methode find by number Card ");
+        Query query = new Query();
+        query.addCriteria(Criteria.where("numberCard").is(numberCard));
+        return reactiveMongoTemplate.findOne(query, Card.class);
+
+    }
 }
